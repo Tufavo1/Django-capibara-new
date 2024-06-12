@@ -1,0 +1,195 @@
+/*Estilos del body*/
+body {
+    background-color: #F5F5F5 !important;
+    margin: 0;
+<<<<<<< HEAD
+    padding: 0;
+=======
+    padding: 5px;
+>>>>>>> 6d601b0219bff7d91a85639ee03efb7955e4df6a
+}
+
+/*Estilos para el header*/
+.hsocial {
+    border-bottom: 2px solid #000;
+    margin-top: 10px;
+    width: 100% !important;
+}
+
+.text-start {
+    color: #000;
+    font-size: 20px;
+    font-weight: 400;
+    width: 100%;
+}
+
+.btn-social :where(svg) {
+    color: #000;
+    justify-content: space-between;
+    margin-right: 5px;
+}
+
+.btn-social svg:hover {
+    color: #FF6F61 !important;
+}
+
+.btn-ayuda {
+    background-color: #FF6F61 !important;
+    color: #fff;
+    border: none;
+    padding: 8px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+
+.btn-ayuda:hover {
+    background-color: #e64c3c !important;
+}
+
+.btn-despacho {
+    background-color: #FF6F61 !important;
+    color: #fff;
+    padding: 8px;
+    border: none;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+
+.btn-despacho:hover {
+    background-color: #e64c3c !important;
+}
+
+/*Estilos del navbar*/
+.navbar {
+    padding: 15px;
+}
+
+.img-logo {
+    width: auto;
+    height: 100px;
+    overflow: hidden;
+}
+
+<<<<<<< HEAD
+=======
+.search {
+    margin: 0 auto;
+    width: auto;
+}
+
+.form-control {
+    width: 350px !important;
+    border-radius: 10px 0 0 10px !important;
+    text-align: center;
+    -webkit-border-radius: 10px 0 0 10px !important;
+    -moz-border-radius: 10px 0 0 10px !important;
+    -ms-border-radius: 10px 0 0 10px !important;
+    -o-border-radius: 10px 0 0 10px !important;
+}
+
+.btn-search {
+    background-color: #FF6F61 !important;
+    border: none;
+    color: #fff;
+    padding: 10px;
+    border-radius: 0 10px 10px 0;
+    -webkit-border-radius: 0 10px 10px 0;
+    -moz-border-radius: 0 10px 10px 0;
+    -ms-border-radius: 0 10px 10px 0;
+    -o-border-radius: 0 10px 10px 0;
+}
+
+.btn-search:hover {
+    background-color: #FFA07A !important;
+}
+
+>>>>>>> 6d601b0219bff7d91a85639ee03efb7955e4df6a
+.nav-item {
+    justify-content: space-between;
+    margin-right: 15px;
+}
+
+.nav-link {
+    color: #333 !important;
+    font-size: 17px !important;
+    font-weight: 500 !important;
+    padding: 10px;
+}
+
+.nav-link:hover {
+    color: #FF6F61 !important;
+}
+
+.active {
+    color: #FFA07A !important;
+}
+
+.cart-counter {
+    background-color: #e64c3c;
+}
+
+/*Estilos para el footer*/
+.custom-footer {
+    background-color: #ff6f61;
+    color: #fff;
+    font-weight: 900;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px 10px 0 0;
+    -webkit-border-radius: 10px 10px 0 0;
+    -moz-border-radius: 10px 10px 0 0;
+    -ms-border-radius: 10px 10px 0 0;
+    -o-border-radius: 10px 10px 0 0;
+}
+
+<<<<<<< HEAD
+=======
+.title-footer {
+    padding: 5px;
+    font-weight: 900;
+}
+
+>>>>>>> 6d601b0219bff7d91a85639ee03efb7955e4df6a
+.link-social {
+    color: #F5F5F5;
+    text-decoration: none;
+}
+
+.link-social:hover {
+    color: #000;
+}
+
+.link-contact {
+    color: #000;
+    text-decoration: none;
+}
+
+.link-contact:hover {
+    color: #F5F5F5;
+}
+
+.social-media a {
+    color: #fff;
+    margin-right: 10px;
+}
+
+.link-social-contact {
+    color: #fff;
+    text-decoration: none;
+}
+
+.link-social-contact:hover {
+    color: #000;
+}
+
+.link-social-contact :where(svg) {
+    margin-right: 5px;
+}

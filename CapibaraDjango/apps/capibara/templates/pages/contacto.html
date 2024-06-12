@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+    <title>CAPIBARA - Sobre Nosotros</title>
+{% endblock title %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/contacto.css' %}">
+{% endblock style %}
+
+{% block nav-activate %}
+<li class="nav-item">
+    <a class="nav-link" aria-current="page" href="/home"><svg xmlns="http://www.w3.org/2000/svg"
+            width="25" height="25" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
+            <path
+                d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z" />
+            <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z" />
+        </svg> Home</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link active" disabled>Nosotros</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link"  href="/productos">Productos</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link disabled" id="cartLink" href="carrito.html">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+            class="bi bi-cart-fill" viewBox="0 0 16 16">
+            <path
+                d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+        </svg>
+        <span class="badge cart-counter">0</span>
+    </a>
+</li>
+<li class="nav-item dropdown">
+    {% if user.is_authenticated %} 
+        <a class="nav-link dropdown" role="button"data-bs-toggle="dropdown" aria-expanded="false"><svg xmlns="http://www.w3.org/2000/svg" width="30"
+            height="30" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+        </svg>{{user.username}}</a>
+        {% else %} 
+            <a class="nav-link" href="acceso"><svg xmlns="http://www.w3.org/2000/svg" width="30"
+                    height="30" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+                </svg>
+            </a>
+        {% endif %} 
+        <ul id="dropNavbar" class="text dropdown-menu" style="background-color: var(--body-color);">
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <li><button class="dropdown-item" type="submit" name="logout">Cerrar sesión</button></li>
+            </form>
+        </ul>
+</li>
+{% endblock nav-activate %}
+
+{% block body %}
+<main>
+    <section class="container-fd p-5">
+        <div class="seccion-presentacion">
+            <h1 class="titulo-principal">CAPIBARA</h1>
+        </div>
+
+        <div class="seccion-historia">
+            <h3>Nuestra Historia</h3>
+            <p class="texto-historia">**CAPIBARA** nació en [año de fundación] con el sueño de llevar muebles de
+                alta calidad y diseño a cada hogar chileno. Desde nuestros inicios, nos hemos dedicado a ofrecer una
+                amplia gama de productos que se ajustan a las necesidades y gustos de nuestros clientes, siempre con
+                la atención personalizada y el servicio de excelencia que nos caracteriza.</p>
+            <p class="texto-historia">A lo largo de [cantidad] años de trayectoria, hemos construido una sólida
+                reputación en el mercado, gracias a la confianza y satisfacción de nuestros clientes. Nos sentimos
+                orgullosos de ser una empresa familiar que ha crecido de manera constante, manteniendo siempre
+                nuestros valores fundamentales y el compromiso con la calidad.</p>
+        </div>
+
+        <div class="seccion-equipo">
+            <h3>Nuestro Equipo</h3>
+            <div class="miembro-equipo">
+                <img src="{% static "img/equipo/Product_Owner-removebg-preview.png" %}" alt="Nombre Miembro Equipo 1">
+                <h4>Carlos Saavedra</h4>
+                <p class="cargo">Product Owner</p>
+                <p class="descripcion">Lider visionario que guia la creacion de este producto para que sea exitoso y
+                    satisfacer las necesidades del cliente y generar valor para el negocio.</p>
+            </div>
+            <div class="miembro-equipo">
+                <img src="{% static "img/equipo/scrum.png" %}" alt="Nombre Miembro Equipo 2">
+                <h4>Daniel Gonzales</h4>
+                <p class="cargo">Scrum Master</p>
+                <p class="descripcion">Facilitador, lider y servidor del equipo Scrum que juega un rol crucial en la
+                    implementacion exitosa de los proyectos agiles.</p>
+            </div>
+            <div class="miembro-equipo">
+                <img src="{% static "img/equipo/software.png" %}" alt="Nombre Miembro Equipo 3">
+                <h4>WebSolutions</h4>
+                <p class="cargo">Desarrolladores Web</p>
+                <p class="descripcion">Este equipo de desarrollo web esta compuesto por profesionales con diferentes
+                    habilidades y conocimientos que trabajan en conjunto para crear y mantener sitios web.</p>
+            </div>
+        </div>
+
+        <div class="seccion-valores">
+            <h3>Nuestros Valores</h3>
+            <ul>
+                <li>Calidad: Ofrecemos productos de alta calidad y diseño, utilizando materiales cuidadosamente
+                    seleccionados y procesos de producción rigurosos.</li>
+                <li>Atención al cliente: Nos preocupamos por brindar una atención personalizada y de excelencia a
+                    cada cliente, asesorándolos en la elección del mueble ideal y resolviendo sus dudas con
+                    prontitud y amabilidad.</li>
+                <li>Compromiso: Estamos comprometidos con la satisfacción de nuestros clientes, el cuidado del
+                    medio ambiente y el desarrollo de nuestra comunidad.</li>
+                <li>Innovación: Buscamos constantemente nuevas tendencias y soluciones innovadoras para ofrecer a
+                    nuestros clientes la mejor experiencia de compra y el mueble perfecto para su hogar.</li>
+                <li>Confianza: Construimos relaciones de confianza duraderas con nuestros clientes, basándonos en
+                    la transparencia, la honestidad y el cumplimiento de nuestras promesas.</li>
+            </ul>
+        </div>
+    </section>
+</main>
+{% endblock body %}

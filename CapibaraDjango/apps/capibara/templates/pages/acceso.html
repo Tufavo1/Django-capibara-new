@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+    <title>Acceso</title>
+{% endblock title %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/acceso.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock style %}
+
+{% block body %}
+<section class="form-user">
+    <div class="wrapper">
+        <div class="title-text">
+            <div class="title login">Iniciar Sesion</div>
+            <div class="title signup">Registrarse</div>
+        </div>
+        <div class="form-container">
+            <div class="slide-controls">
+                <input class="input-slide" type="radio" name="slide" id="login" checked>
+                <input class="input-slide" type="radio" name="slide" id="signup">
+                <label for="login" class="slide login">Iniciar</label>
+                <label for="signup" class="slide signup">Registrarme</label>
+                <div class="slider-tab"></div>
+            </div>
+            
+            <div class="form-inner">
+                
+
+                <form id="loginUser" action="#" class="login" method="POST">
+                    {% csrf_token %}
+
+                    {% if error %}
+                        <small class="text-danger" style="justify-content: center; display: flex;" id="usuario-error">{{error}}</small>
+                    {% endif %}
+                    
+                    <div class="field">
+                        <input name="User" id="User"  placeholder="Ingresa nombre de Usuario" required>
+                    </div>
+                    <div class="field">
+                        <input name="loginPassword" id="loginPassword" type="password" placeholder="Ingresa tu password" required>
+                    </div>
+                    <div class="pass-link"><a href="#">Olvidaste Contrasennia?</a></div>
+                    <div class="field btn">
+                        <div class="btn-layer"></div>
+                        <input id="loginBtn" type="submit" value="Iniciar">
+                    </div>
+                </form>
+                <form id="registerUser" action="#" class="signup" method="POST">
+                    {% csrf_token %}
+
+                    <div class="field">
+                        <input name="registerNombre" id="registerNombre" type="text" placeholder="Nombre de Usuario" required>
+                    </div>
+                    <div class="field">
+                        <input name="registerEmail" id="registerEmail" type="email" placeholder="Correo Electrónico" required>
+                    </div>
+                    <div class="field">
+                        <input name="registerPassword" id="registerPassword" type="password" placeholder="Contraseña" required>
+                    </div>
+                    <div class="field btn">
+                        <div class="btn-layer"></div>
+                        <input id="registerBtn" type="submit" value="registrarme">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock body %}
+
+{% block script%}
+    <script src="{% static 'js/registro.js' %}"></script>
+{% endblock script%}

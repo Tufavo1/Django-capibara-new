@@ -1,0 +1,98 @@
+/*Estilos para nosotros*/
+.seccion-presentacion {
+    text-align: center;
+}
+
+.seccion-historia {
+    padding: 10px;
+    margin-top: 10px !important;
+    padding: 50px;
+}
+
+.seccion-historia :where(h3) {
+    float: left;
+    margin-top: 45px;
+    margin-left: 5%;
+}
+
+.seccion-historia :where(p) {
+    width: 50%;
+    margin: 0 auto;
+}
+
+/* Estilo para la sección del equipo */
+.seccion-equipo {
+    display: flex;
+    align-items: flex-start;
+    padding: 50px;
+    border-top: 1px solid #000;
+}
+
+.seccion-equipo :where(h3) {
+    float: left;
+    margin-top: 100px !important;
+    margin-left: 5%;
+}
+
+.miembro-equipo-contenedor {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 20px;
+}
+
+.miembro-equipo {
+    width: 450px;
+    text-align: center;
+}
+
+.miembro-equipo :where(img) {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    overflow: hidden;
+}
+
+.miembro-equipo :where(h4) {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.cargo {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.descripcion {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Estilo para la sección de valores */
+.seccion-valores {
+    text-align: center;
+    margin-bottom: 50px;
+    padding: 50px;
+    border-top: 1px solid #000;
+}
+
+.seccion-valores h3 {
+    float: left;
+    margin-top: 100px !important;
+    margin-left: 5%;
+}
+
+.seccion-valores ul {
+    list-style: none;
+    padding: 0;
+    width: 50%;
+    margin: 0 auto;
+}
+
+.seccion-valores li {
+    margin-bottom: 15px;
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: start;
+}
