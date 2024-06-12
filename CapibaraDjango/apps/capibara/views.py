@@ -44,76 +44,66 @@ def ver_producto(request, p_cod):
 
 
 def CargarProductos(request):
-    categoria_id = request.GET.get("categoria_id")
+    productos = Producto.objects.filter(stock__gt="0").order_by("nombre")
     muebles = Mueble.objects.all()
-    categoria = Categoria.objects.all()
-
-    if categoria_id:
-        productos = Producto.objects.filter(
-            stock__gt=0, tipomueble=categoria_id
-        ).order_by("nombre")
-    else:
-        productos = Producto.objects.filter(stock__gt=0).order_by("nombre")
-
-    paginator = Paginator(productos, 8)
+    categorias = Producto.objects.values("categoria").distinct()
+    paginator = Paginator(productos, 9)
     page_number = request.GET.get("page")
     page_products = paginator.get_page(page_number)
 
     return render(
         request,
-        "pages/productos.html",
-        {"productos": page_products, "cate": categoria, "mueble": muebles},
+        "pages/productos/productos.html",
+        {
+            "prod": page_products,
+            "cate": categorias,
+            "mueb": muebles,
+        },
     )
 
 
 def CargarCocina(request):
-    prodCocina = Producto.objects.filter(stock__gt="0", categoria_id="1").order_by(
-        "nombre"
-    )
-    categorias = Categoria.objects.all()
-    muebles = Mueble.objects.values("nombre").distinct()
-    paginator = Paginator(prodCocina, 6)
-    page_number = request.GET.get("page")
-    page_products = paginator.get_page(page_number)
-
-    return render(
-        request,
-        "pages/productos/cocina.html",
-        {"productos": page_products, "cate": categorias, "mueble": muebles},
-    )
-
-
-def CargarComedor(request):
-    prodComedor = Producto.objects.filter(stock__gt="0", categoria_id="3").order_by(
-        "nombre"
-    )
-    categorias = Categoria.objects.all()
-    muebles = Mueble.objects.values("nombre").distinct()
-    paginator = Paginator(prodComedor, 6)
+    prodCoci = Producto.objects.filter(stock__gt="0", categoria="1").order_by("nombre")
+    muebles = Mueble.objects.all()
+    categorias = Producto.objects.values("categoria").distinct()
+    paginator = Paginator(prodCoci, 6)
     page_number = request.GET.get("page")
     page_products = paginator.get_page(page_number)
 
     return render(
         request,
         "pages/productos/comedor.html",
-        {"productos": page_products, "cate": categorias, "mueble": muebles},
+        {"prod": page_products, "mueb": muebles, "cat": categorias},
     )
 
 
-def CargarDormitorio(request):
-    productos = Producto.objects.filter(stock__gt="0", categoria_id="2").order_by(
-        "nombre"
-    )
-    categorias = Categoria.objects.all()
-    muebles = Mueble.objects.values("nombre").distinct()
-    paginator = Paginator(productos, 6)
+def CargarComedor(request):
+    prodCom = Producto.objects.filter(stock__gt="0", categoria="3").order_by("nombre")
+    muebles = Mueble.objects.all()
+    categorias = Producto.objects.values("categoria").distinct()
+    paginator = Paginator(prodCom, 6)
     page_number = request.GET.get("page")
     page_products = paginator.get_page(page_number)
 
     return render(
         request,
-        "pages/productos/dormitorio.html",
-        {"productos": page_products, "cate": categorias, "mueble": muebles},
+        "pages/productos/comedor.html",
+        {"prod": page_products, "mueb": muebles, "cat": categorias},
+    )
+
+
+def CargarDormitorio(request):
+    prodDorm = Producto.objects.filter(stock__gt="0", categoria="2").order_by("nombre")
+    muebles = Mueble.objects.all()
+    categorias = Producto.objects.values("categoria").distinct()
+    paginator = Paginator(prodDorm, 6)
+    page_number = request.GET.get("page")
+    page_products = paginator.get_page(page_number)
+
+    return render(
+        request,
+        "pages/productos/comedor.html",
+        {"prod": page_products, "mueb": muebles, "cat": categorias},
     )
 
 
@@ -170,9 +160,8 @@ def CargarCarrito(request):
     return render(request, "pages/carrito.html", context)
 
 
-# login
 def acceso(request):
-    context = {}  # Define el contexto vacío al principio.
+    context = {}
 
     if request.method == "POST":
         if "User" in request.POST and "loginPassword" in request.POST:
@@ -184,7 +173,7 @@ def acceso(request):
                 login(request, user)
                 return redirect("/home")
             else:
-                print("Credenciales inválidas")  # Depuración
+                print("Credenciales inválidas")
                 context["error"] = "Credenciales inválidas. Intente nuevamente."
 
         elif (
@@ -196,20 +185,16 @@ def acceso(request):
             correo = request.POST.get("registerEmail")
             contraseña = request.POST.get("registerPassword")
 
-            # Crea un nuevo usuario
             user = User.objects.create_user(
                 username=nombre_usuario, email=correo, password=contraseña
             )
             login(request, user)
 
-            # Usuario registrado con éxito, puedes redirigirlo al inicio u otra página.
             return redirect("/home")
-    # Renderiza la plantilla con el contexto, ya sea que el usuario se autentique o no.
     return render(request, "pages/acceso.html", context)
 
 
 def logout_view(request):
     if request.method == "POST":
-        # Si se envía una solicitud POST con el nombre 'logout', entonces realiza el logout.
         logout(request)
         return redirect("/home")

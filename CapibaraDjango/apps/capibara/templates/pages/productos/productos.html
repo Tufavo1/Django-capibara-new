@@ -133,10 +133,10 @@
                         <h2 class="filter-header-cat">Categoría</h2>
                         <div class="filter-body">
                             <ul class="list-group">
-                                {% for categoria in cate %}
+                                {% for m in mueb %}
                                 <li class="list-group-item">
                                     <label class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="categoria" value="{{ categoria.id }}"> {{ categoria.nombre }}
+                                        <input class="form-check-input" type="checkbox" name="categoria" value="{{ m.id }}"> {{ m.nombre }}
                                     </label>
                                 </li>
                                 {% endfor %}
@@ -149,7 +149,7 @@
             </div>
 
             <div class="col-md-9 container-productos">
-                {% for p in productos %}
+                {% for p in prod %}
                 <button class="card" id="{{p.cod}}" data-categoria="{{p.categoria.nombre}}" data-precio="{{p.precio}}" data-url="{% url "ver_producto" p.cod %}">
                     <span class="card-stock" style="display:none;">Disponible: {{ p.stock }} </span>
                     <img src="{{ p.img.url }}" class="card-img-top" alt="{{ p.img.url }}">
