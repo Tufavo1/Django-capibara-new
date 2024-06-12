@@ -1,17 +1,14 @@
-<<<<<<< HEAD
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import *
 from django.core.paginator import Paginator
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
-=======
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import *
 from django.core.paginator import Paginator
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
->>>>>>> 6d601b0219bff7d91a85639ee03efb7955e4df6a
 
 
 # Create your views here.
@@ -147,7 +144,6 @@ def CargarContacto(request):
     return render(request, "pages/contacto.html")
 
 
-<<<<<<< HEAD
 @require_POST
 def agregar_al_carrito(request):
     producto_cod = request.POST.get("producto_cod")
@@ -172,42 +168,48 @@ def CargarCarrito(request):
     ]
     context = {"carrito_items": carrito_items}
     return render(request, "pages/carrito.html", context)
-=======
 
-#login
+
+# login
 def acceso(request):
     context = {}  # Define el contexto vacío al principio.
 
-    if request.method == 'POST':
-        if 'User' in request.POST and 'loginPassword' in request.POST:
-            usuario = request.POST.get('User')
-            clave = request.POST.get('loginPassword')
+    if request.method == "POST":
+        if "User" in request.POST and "loginPassword" in request.POST:
+            usuario = request.POST.get("User")
+            clave = request.POST.get("loginPassword")
             user = authenticate(request, username=usuario, password=clave)
             if user is not None:
 
                 login(request, user)
-                return redirect('/home')
+                return redirect("/home")
             else:
                 print("Credenciales inválidas")  # Depuración
-                context['error'] = 'Credenciales inválidas. Intente nuevamente.'
+                context["error"] = "Credenciales inválidas. Intente nuevamente."
 
-        elif 'registerNombre' in request.POST and 'registerEmail' in request.POST and 'registerPassword' in request.POST:
-            nombre_usuario = request.POST.get('registerNombre')
-            correo = request.POST.get('registerEmail')
-            contraseña = request.POST.get('registerPassword')
+        elif (
+            "registerNombre" in request.POST
+            and "registerEmail" in request.POST
+            and "registerPassword" in request.POST
+        ):
+            nombre_usuario = request.POST.get("registerNombre")
+            correo = request.POST.get("registerEmail")
+            contraseña = request.POST.get("registerPassword")
 
             # Crea un nuevo usuario
-            user = User.objects.create_user(username=nombre_usuario, email=correo, password=contraseña)
+            user = User.objects.create_user(
+                username=nombre_usuario, email=correo, password=contraseña
+            )
             login(request, user)
-            
+
             # Usuario registrado con éxito, puedes redirigirlo al inicio u otra página.
-            return redirect('/home')
-    #Renderiza la plantilla con el contexto, ya sea que el usuario se autentique o no.
-    return render(request, 'pages/acceso.html', context)
+            return redirect("/home")
+    # Renderiza la plantilla con el contexto, ya sea que el usuario se autentique o no.
+    return render(request, "pages/acceso.html", context)
+
 
 def logout_view(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         # Si se envía una solicitud POST con el nombre 'logout', entonces realiza el logout.
         logout(request)
-        return redirect('/home')   
->>>>>>> 6d601b0219bff7d91a85639ee03efb7955e4df6a
+        return redirect("/home")
