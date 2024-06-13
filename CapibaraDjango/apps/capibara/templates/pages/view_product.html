@@ -63,7 +63,7 @@
                     <h1 class="titulo">Disponible: <span class="otro">{{ producto.stock }}</span> </h1>
                     <h1 class="titulo">Precio: $<span class="otro">{{ producto.precio }}</span></h1>
                     <div class="Especificaciones">
-                        <h2>Especificaciones</h2>
+                        <h2 class="title-especificaciones">Especificaciones</h2>
                         <ul>
                             <li><strong>Material:</strong> {{ producto.material }}</li>
                             <li><strong>Clasificación:</strong> {{ producto.clasificacion }}</li>
@@ -102,8 +102,8 @@
                         {% for opinion in producto.opiniones.all %}
                             <tr class="card">
                                 <td class="user-title">
-                                    <label class="user-label" for="nombre_usuario">Nombre de Usuario:</label>
-                                    <span class="user-span">{{ opinion.nombre_usuario }}</span>
+                                    <label class="user-label" for="username">Usuario:</label>
+                                    <span class="user-span">{{ opinion.username }}</span>
                                 </td>
                                 <td>
                                     <label class="calificacion-star" for="calificacion">Calificación</label>
@@ -164,7 +164,7 @@
         
                         {% if nueva_opinion %}
                             <tr>
-                                <td>{{ nueva_opinion.nombre_usuario }}</td>
+                                <td>{{ nueva_opinion.username }}</td>
                                 <td>
                                     <div class="calificacion">
                                         {% if nueva_opinion.calificacion >= 1 %}
@@ -219,17 +219,18 @@
                         {% endif %}
                     </tbody>
                 </table>
+
                 <section class="resenas-opn">
                     {% if user.is_authenticated %}
                     <div class="add-opn">
                         <h3 class="title-opn-add">Agregar Opinión</h3>
                         <form class="form-opn" method="post" action="{% url 'agregar_opinion' producto.cod %}">
                             {% csrf_token %}
-                            <label class="label-opn" for="nombre_usuario" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                            <label class="label-opn" for="username" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
                                 <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
                                 <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
                             </svg></label>
-                            <input style="display: none;" class="name-opn" type="text" id="nombre_usuario" name="nombre_usuario" value="{{ user.username }}" disabled><br>        
+                            <input style="display: none;" class="name-opn" type="text" id="username" name="username" value="{{ user.username }}" disabled><br>        
                             <label class="label-opn" for="calificacion">Califica el producto (1-5)</label>
                             <div class="calificacion-opn">
                                 <input type="radio" id="estrella5" name="calificacion" value="1" required>

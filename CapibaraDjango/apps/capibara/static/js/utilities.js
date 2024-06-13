@@ -1,44 +1,43 @@
 document.addEventListener('DOMContentLoaded', function () {
-    var verMasDetallesBtns = document.querySelectorAll('[data-bs-toggle="modal"]');
-    var modalInfoCardContent = document.querySelector('.modal-info-card').innerHTML;
-
-    verMasDetallesBtns.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            var card = this.closest('.card');
-            if (card) {
-                var cardTitle = card.querySelector('.card-title').innerText;
-                var cardBrand = card.querySelector('.card-brand').innerText;
-                var cardStock = card.querySelector('.card-stock').innerText;
-                var detalleProducto = document.getElementById('detalleProducto');
-
-                detalleProducto.innerHTML = '<h5>' + cardTitle + '</h5><p>' + '</p><p>Clasificacion del Producto: ' + cardBrand + '</p><p>Stock disponible: ' + cardStock + '</p>' + modalInfoCardContent;
-            }
-        });
-    });
-
     const form = document.querySelector('.search');
     const input = form.querySelector('input');
-    const products = document.querySelectorAll('.card');
+    const products = document.querySelectorAll('.abrir-producto');
 
     input.addEventListener('input', function () {
         const searchTerm = input.value.trim().toLowerCase();
 
         products.forEach(function (product) {
             const title = product.querySelector('.card-title').textContent.toLowerCase();
-            const brand = product.querySelector('.card-brand').textContent.toLowerCase();
-            const type = product.querySelector('.Type-card').textContent.toLowerCase();
+            const price = product.querySelector('.price').textContent.toLowerCase();
+            const stock = product.querySelector('.stock').textContent.toLowerCase();
 
-            if (title.includes(searchTerm) || brand.includes(searchTerm) || type.includes(searchTerm)) {
-                product.style.transition = 'opacity 0.5s';
-                product.style.opacity = '1';
-                if (title.includes(searchTerm)) {
-                    product.style.backgroundColor = '#ffcccc';
-                } else {
-                    product.style.backgroundColor = '';
-                }
+            if (title.includes(searchTerm) || price.includes(searchTerm) || stock.includes(searchTerm)) {
+                product.style.display = 'block'; // Mostrar producto si coincide con el término de búsqueda
             } else {
-                product.style.transition = 'opacity 0.5s';
-                product.style.opacity = '0';
+                product.style.display = 'none'; // Ocultar producto si no coincide
+            }
+        });
+    });
+
+    const filterButton = document.getElementById('filter-prod');
+    filterButton.addEventListener('click', function () {
+        const minPrice = parseFloat(document.getElementById('minPrice').value) || 0;
+        const maxPrice = parseFloat(document.getElementById('maxPrice').value) || Infinity;
+        const selectedCategories = document.querySelectorAll('input[name="categoria"]:checked');
+
+        products.forEach(function (product) {
+            const productPrice = parseFloat(product.getAttribute('data-precio'));
+            const productCategory = product.getAttribute('data-categoria').toLowerCase();
+
+            const priceInRange = productPrice >= minPrice && productPrice <= maxPrice;
+            const categoryMatch = Array.from(selectedCategories).some(function (category) {
+                return productCategory.includes(category.value);
+            });
+
+            if (priceInRange && (selectedCategories.length === 0 || categoryMatch)) {
+                product.style.display = 'block'; // Mostrar producto si cumple con los filtros de precio y categoría
+            } else {
+                product.style.display = 'none'; // Ocultar producto si no cumple con los filtros
             }
         });
     });
