@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 
 # Create your models here.
@@ -59,24 +60,14 @@ class Producto(models.Model):
         return txt.format(self.cod, self.mueble, self.nombre)
 
 
-class Cargo(models.Model):
-    id = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=50, null=False)
-
-    def __str__(self):
-        txt = "[{0}] {1}"
-        return txt.format(self.id, self.nombre)
-
-
-class User(models.Model):
+class User(AbstractUser):
     username = models.CharField(primary_key=True, max_length=50, null=False)
     password = models.CharField(max_length=50, null=False)
     email = models.CharField(max_length=50, null=False)
     nombre = models.CharField(max_length=50, null=False)
     direccion = models.CharField(max_length=100, null=False)
-    telefono = models.IntegerField(null=False)
+    telefono = models.TextField(max_length=12, null=False)
     subscribed = models.BooleanField(null=False, default=False)
-    tipo = models.ForeignKey(Cargo, on_delete=models.CASCADE)
 
     def __str__(self):
         txt = "[{0}] {1}"

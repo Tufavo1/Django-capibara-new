@@ -1,0 +1,131 @@
+.container {
+    display: flex;
+    margin-bottom: 50px;
+}
+
+.container-cart {
+    flex: 1;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.container-cart :where(h1) {
+    text-align: center;
+    font-weight: bold;
+}
+
+.checkout {
+    width: 30%;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+/* Estilos para la tabla del carrito */
+.table-cart {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border: 2px solid #000;
+    max-height: 500px;
+}
+
+.table-cart th,
+.table-cart td {
+    padding: 8px;
+    text-align: left;
+}
+
+.table-cart :where(th) {
+    background-color: #eee;
+    color: #333;
+    text-align: center !important;
+}
+
+.table-cart :where(td) {
+    background-color: #fff;
+    color: #000;
+    text-align: center !important;
+}
+
+.table-cart img {
+    max-width: 100px;
+    height: auto;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+/* Estilos para el formulario y detalles de envío */
+.container-metodo-delivery {
+    width: 100%;
+    height: auto;
+    background-color: #eee;
+    padding: 15px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    margin-top: 20px;
+}
+
+.container-metodo-delivery :where(h2) {
+    text-align: center !important;
+}
+
+.form-shipping {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para el resumen de la compra */
+.checkout h2 {
+    margin-top: 0;
+}
+
+.subtotal,
+.iva,
+.despacho,
+.total {
+    margin-bottom: 10px;
+}
+
+.subtotal span,
+.iva span,
+.despacho span,
+.total span {
+    display: inline-block;
+    width: 150px;
+}
+
+/* Estilos adicionales según sea necesario */
+select,
+input[type="text"],
+button {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+button:focus {
+    outline: none;
+}

@@ -65,6 +65,8 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 # Procesador del contexto del carrito personalizado
                 "apps.capibara.context_processor.carrito_counter",
+                # Procesador del contexto del
+                "apps.capibara.context_processor.calcular_costo_adicional",
             ],
         },
     },
@@ -72,6 +74,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "CapibaraDjango.wsgi.application"
 
+AUTH_USER_MODEL = "capibara.User"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases

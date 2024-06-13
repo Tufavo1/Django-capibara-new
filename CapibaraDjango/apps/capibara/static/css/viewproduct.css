@@ -59,39 +59,148 @@
     padding: 5px;
 }
 
-.Especificaciones {}
-
-.title-especificaciones {
-    font-size: 24px;
-    margin-bottom: 10px;
-    color: #333;
+/*Estilos para las especificaciones*/
+.Especificaciones {
+    background-color: #eee;
+    padding: 10px;
+    margin-bottom: 20px;
 }
 
-.Especificaciones ul {
+.title-sect {
+    text-align: center;
+    border-bottom: 1px solid #000;
+}
+
+/*Estilos para el disponible y el stock*/
+.titulo-d {
+    text-align: center;
+}
+
+.titulo-t {
+    background-color: #eee;
+    padding: 10px;
+    width: 50%;
+    margin: 0 auto;
+    text-align: center;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+}
+
+/*modal de como funciona*/
+.total-and-button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.total {
+    flex: 1;
+    width: 50%;
+}
+
+.btn-help {
+    margin-left: 10px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    transition: background-color 0.3s ease;
+    -webkit-transition: background-color 0.3s ease;
+    -moz-transition: background-color 0.3s ease;
+    -ms-transition: background-color 0.3s ease;
+    -o-transition: background-color 0.3s ease;
+}
+
+.btn-help:hover {
+    background-color: #FF6F61;
+    color: #000;
+}
+
+.btn-calcular {
+    margin-left: 10px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    transition: background-color 0.3s ease;
+    -webkit-transition: background-color 0.3s ease;
+    -moz-transition: background-color 0.3s ease;
+    -ms-transition: background-color 0.3s ease;
+    -o-transition: background-color 0.3s ease;
+}
+
+.btn-calcular:hover {
+    background-color: #FF6F61;
+    color: #000;
+}
+
+/*Estilos para el clasificacion*/
+.clasificacion {
+    background-color: #eee;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 600px;
+    margin: 0 auto;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+}
+
+.clasificacion ul {
     list-style-type: none;
     padding: 0;
 }
 
-.Especificaciones ul li {
+.clasificacion li {
     margin-bottom: 10px;
-    font-size: 16px;
-}
-
-.Especificaciones ul li strong {
-    font-weight: bold;
-    margin-right: 5px;
-    color: #555;
-}
-
-
-/*Estilos para los botones*/
-.container-btn-favorite {
-    justify-content: center;
     display: flex;
-    margin-bottom: 10px;
+    flex-direction: column;
 }
 
-.btn-cart-heart {
+.clasificacion li label {
+    margin-bottom: 5px;
+}
+
+.clasificacion input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+.btn-close {
+    background-color: #ccc;
+    color: #333;
+    border: none;
+    padding: 8px 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    display: flex;
+}
+
+/*Estilos para el boton de clasificacion*/
+.btn-clasificacion {
     padding: 15px;
     justify-content: center;
     display: flex;
@@ -112,31 +221,41 @@
     -o-border-radius: 10px;
 }
 
-.btn-cart-heart:hover {
+.btn-clasificacion:hover {
     background-color: #fff;
     color: #000;
     border: 2px solid #000;
 }
 
-.btn-cart-heart :where(svg) {
-    color: #fd1d1d;
-    margin-left: 10px;
+/*Estilos para los botones*/
+.container-buttons {
+    margin-top: 30px;
 }
 
-.btn-cart {
-    padding: 15px;
-    justify-content: center;
+.row {
     display: flex;
-    margin: 0 auto;
-    width: 60%;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.col-6 {
+    flex: 0 0 calc(50% - 10px);
+}
+
+.btn-cart-heart,
+.btn-cart {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 10px;
+    border: none;
     background-color: #000;
     color: #fff;
+    font-size: 16px;
+    cursor: pointer;
     transition: background-color 0.3s ease;
-    -webkit-transition: background-color 0.3s ease;
-    -moz-transition: background-color 0.3s ease;
-    -ms-transition: background-color 0.3s ease;
-    -o-transition: background-color 0.3s ease;
-    border: none;
     border-radius: 10px;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
@@ -144,13 +263,27 @@
     -o-border-radius: 10px;
 }
 
+.btn-cart-heart:hover,
 .btn-cart:hover {
     background-color: #FF6F61;
-    color: #000;
 }
 
-.btn-cart :where(svg) {
-    margin-left: 10px;
+.btn-cart-heart svg,
+.btn-cart svg {
+    margin-left: 5px;
+}
+
+.btn-cart-heart svg,
+.btn-cart svg {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    margin-left: 5px;
+}
+
+.btn-cart svg,
+.btn-cart svg {
+    margin-left: 5px;
 }
 
 /*Estilos para las opiniones*/

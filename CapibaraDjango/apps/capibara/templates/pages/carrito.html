@@ -10,7 +10,7 @@
 
 
 {% block style %}
-    <link rel="stylesheet" href="{% static 'CSS/viewproduct.css' %}">
+    <link rel="stylesheet" href="{% static 'CSS/cart.css' %}">
 {% endblock style %}
 
 {% block nav-activate %}
@@ -39,14 +39,107 @@
 
 
 {% block body %}
-<section class="container-cart">
-    <h1>Carrito de Compras</h1>
-    <ul>
-        {% for item in carrito_items %}
-            <li>
-                {{ item.producto.nombre }} - {{ item.cantidad }} unidades - ${{ item.producto.precio }} cada uno
-            </li>
-        {% endfor %}
-    </ul>
+<section class="container">
+    <section class="container-cart">
+        <h1>Carrito de Compras</h1>
+        <table class="table-cart">
+            <thead>
+                <tr>
+                    <th>Imagen</th>
+                    <th>Nombre</th>
+                    <th>Cantidad</th>
+                    <th>Precio unitario</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in carrito_items %}
+                <tr>
+                    <td><img src="{{ item.producto.img.url }}" class="card-img-top" alt="{{ item.producto.nombre }}"></td>
+                    <td>{{ item.producto.nombre }}</td>
+                    <td>{{ item.cantidad }}</td>
+                    <td>${{ item.producto.precio }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="container-metodo-delivery" id="shipping-method">
+            <h2>Método de Envío</h2>
+            <form class="form-shipping" id="shipping-form">
+                <div>
+                    <input type="radio" id="domicilio" name="shipping" value="domicilio">
+                    <label for="domicilio">Despacho a Domicilio</label>
+                </div>
+            </form>
+            <div id="shipping-details" style="display: none;">
+                <h2>Detalles de Envío</h2>
+                <form id="shipping-details-form">
+                    <div>
+                        <label for="direccion">Ingresar Dirección:</label>
+                        <input type="text" id="direccion" name="direccion">
+                    </div>
+                    <div>
+                        <label for="numero-direccion">Ingresar Número de Dirección:</label>
+                        <input type="text" id="numero-direccion" name="numero-direccion">
+                    </div>
+                    <div>
+                        <label for="telefono">Ingresar Número de Teléfono:</label>
+                        <input type="text" id="telefono" name="telefono">
+                    </div>
+                    <div>
+                        <label for="zona">Seleccionar Zona:</label>
+                        <select id="zona" name="zona">
+                            <option value="">Seleccione una zona</option>
+                            <option value="Zona 1 (Arica y Parinacota - Antofagasta)">Zona 1 (Arica y Parinacota -
+                                Antofagasta)</option>
+                            <option value="Zona 2 (Atacama - Coquimbo)">Zona 2 (Atacama - Coquimbo)</option>
+                            <option value="Zona 3 (Valparaiso - Maule)">Zona 3 (Valparaiso - Maule)</option>
+                            <option value="Zona 4 (BIOBIO - Los Lagos)">Zona 4 (BIOBIO - Los Lagos)</option>
+                            <option value="Zona 5 (Aysen - Magallanes)">Zona 5 (Aysen - Magallanes)</option>
+                        </select>
+                    </div>
+                    <div id="region-container" style="display: none;">
+                        <label for="region">Seleccionar Región:</label>
+                        <select id="region" name="region">
+                            <option value="">Seleccione una región</option>
+                        </select>
+                    </div>
+                    <div id="comuna-container" style="display: none;">
+                        <label for="comuna">Seleccionar Comuna:</label>
+                        <select id="comuna" name="comuna">
+                            <option value="">Seleccione una comuna</option>
+                        </select>
+                    </div>
+                    <button type="button" id="confirmar-envio">Confirmar Envío</button>
+                    <button type="button" id="editar-direccion">Editar Dirección</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section class="checkout" id="Checkout">
+        <h2>Resumen de la Compra</h2>
+        <div class="subtotal">
+            <span>Subtotal:</span>
+            <span id="Sub-cart"></span>
+        </div>
+        <div class="iva">
+            <span>IVA (19%):</span>
+            <span id="iva-cart"></span>
+        </div>
+        <div class="despacho">
+            <span>Costo de Despacho:</span>
+            <span id="Cost-despacho"></span>
+        </div>
+        <div class="total">
+            <span>Total:</span>
+            <span id="Total-cart"></span>
+        </div>
+    </section>
 </section>
+
 {% endblock body %}
+
+{% block script %}
+    <script src="{% static "js/get-zones.js" %}"></script>
+    <script src="{% static "js/get-cart.js" %}"></script>
+{% endblock script %}

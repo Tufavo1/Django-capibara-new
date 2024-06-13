@@ -50,49 +50,118 @@
 
 
 {% block body %}
-        <div class="producto">
-            <div class="Container-Producto-img">
-                <img src="{{ producto.img.url }}" class="card-img-top" alt="{{ producto.nombre }}">
-            </div>
-            <div class="Container-Producto-inf">
-                <div class="Producto-inf">
-                    
-                    <h1 class="titulo-card">{{ producto.nombre }}</h1> 
-                    <h1 class="titulo-product">Descripción del producto</h1>
-                    <h1 class="titulo">Descripción:<span class="otro"> {{ producto.descripcion }}</span></h1>
-                    <h1 class="titulo">Disponible: <span class="otro">{{ producto.stock }}</span> </h1>
-                    <h1 class="titulo">Precio: $<span class="otro">{{ producto.precio }}</span></h1>
-                    <div class="Especificaciones">
-                        <h2 class="title-especificaciones">Especificaciones</h2>
-                        <ul>
-                            <li><strong>Material:</strong> {{ producto.material }}</li>
-                            <li><strong>Clasificación:</strong> {{ producto.clasificacion }}</li>
-                            <li><strong>Precio:</strong> ${{ producto.precio }}</li>
-                            <li><strong>Stock:</strong> {{ producto.stock }}</li>
-                            <li><strong>Largo:</strong> {{ producto.largo_cm }} cm</li>
-                            <li><strong>Ancho:</strong> {{ producto.ancho_cm }} cm</li>
-                            <li><strong>Alto:</strong> {{ producto.alto_cm }} cm</li>
-                        </ul>
-                    </div>
-                    <div class="container-btn-favorite">
-                        <button id="btn-add-to-cart" class="btn-cart-heart" type="submit">
-                                Agregar Como Favorito <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+    <div class="producto">
+        <div class="Container-Producto-img">
+            <img src="{{ producto.img.url }}" class="card-img-top" alt="{{ producto.nombre }}">
+        </div>
+        <div class="Container-Producto-inf">
+            <div class="Producto-inf">
+                <h1 class="titulo-card">{{ producto.nombre }}</h1>
+                <h1 class="titulo-product">Descripción del producto</h1>
+                <h1 class="titulo">Descripción:<span class="otro"> {{ producto.descripcion }}</span></h1>
+                <div class="Especificaciones">
+                    <ul>
+                        <h6 class="title-sect">Especificaciones</h6>
+                        <li><strong>Clasificación:</strong> {{ producto.clasificacion }}</li>
+                        <li><strong>Largo:</strong> {{ producto.largo_cm }} cm</li>
+                        <li><strong>Ancho:</strong> {{ producto.ancho_cm }} cm</li>
+                        <li><strong>Alto:</strong> {{ producto.alto_cm }} cm</li>
+                        <h6 class="title-sect">Costos Adicionales</h6>
+                        <li><strong>Costo adicional:</strong> $<span id="costo-adicional">{{ costo_adicional }}</span></li>
+                        <li><strong>Precio total:</strong> $<span id="precio-total">{{ producto.precio }}</span></li>
+                    </ul>
+                </div>
+                <h4 class="titulo-d">Disponible: <span class="otro">{{ producto.stock }}</span> </h4>
+                <h3 class="titulo-t">Precio: $<span class="otro" id="precio-producto">{{ producto.precio }}</span></h3>
+                
+                <div class="row container-buttons">
+                    <div class="col-6">
+                        <button id="btn-add-to-cart" class="btn-cart-heart" type="button" onclick="agregarAFavoritos()">
+                            Agregar Como Favorito 
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
-                              </svg>
+                            </svg>
                         </button>
                     </div>
-                    <form method="post" action="{% url 'agregar_al_carrito' %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="producto_cod" value="{{ producto.cod }}">
-                        <button id="btn-add-to-cart" class="btn-cart" type="submit">
-                            Agregar al carrito <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart-plus-fill" viewBox="0 0 16 16">
-                                <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0M9 5.5V7h1.5a.5.5 0 0 1 0 1H9v1.5a.5.5 0 0 1-1 0V8H6.5a.5.5 0 0 1 0-1H8V5.5a.5.5 0 0 1 1 0"/>
-                              </svg>
-                        </button>
-                    </form>
+                    <div class="col-6">
+                        <form method="post" action="{% url 'agregar_al_carrito' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="producto_cod" value="{{ producto.cod }}">
+                            <input type="hidden" name="precio_total" id="precio-total" value="{{ producto.precio }}" max="{{ producto.stock }}">
+                            <button id="btn-add-to-cart" class="btn-cart" type="submit">
+                                Agregar al carrito 
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart-plus-fill" viewBox="0 0 16 16">
+                                    <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0M9 5.5V7h1.5a.5.5 0 0 1 0 1H9v1.5a.5.5 0 0 1-1 0V8H6.5a.5.5 0 0 1 0-1H8V5.5a.5.5 0 0 1 1 0"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>                    
+                </div>
+                <button class="btn-clasificacion" id="btn-clasificacion">Personalizar Producto</button>
+                <div class="clasificacion" id="clasificacion" style="display:none;">
+                    <button class="btn-close" id="btn-close"></button>
+                    <h2>Personalizar Producto</h2>
+                    <P>Ingresa tus medidas personalizadas asociadas con un costo extra</p>
+                        <form method="post">
+                            {% csrf_token %}
+                            <ul>
+                                <li>
+                                    <label for="largo">Largo:</label>
+                                    <input type="number" id="largo" name="largo" value="{{ form.largo.value }}">
+                                </li>
+                                <li>
+                                    <label for="ancho">Ancho:</label>
+                                    <input type="number" id="ancho" name="ancho" value="{{ form.ancho.value }}">
+                                </li>
+                                <li>
+                                    <label for="alto">Alto:</label>
+                                    <input type="number" id="alto" name="alto" value="{{ form.alto.value }}">
+                                </li>
+                                <li>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <button type="submit" class="btn-calcular">Calcular Costo adicional</button>
+                                        </div>
+                                        <div class="col-6">
+                                            <button id="btn-confirmar" class="btn-calcular">Confirmar costo adicional</button>
+                                        </div>
+                                    </div>
+                                    
+                                </li>
+                            </ul>
+                        </form>
+                    <div class="total-and-button-container">
+                        <div class="total">
+                            <h4><strong>Costo adicional:</strong> ${{ costo_adicional }}</h4>
+                        </div>
+                        <div class="button">
+                            <button type="button" class="btn-help" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                Como funciona 
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle-fill" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.496 6.033h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286a.237.237 0 0 0 .241.247m2.325 6.443c.61 0 1.029-.394 1.029-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94 0 .533.425.927 1.01.927z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Cómo funciona</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body-help">
+                                        <p>Sobre 20 cm tiene un valor de 35.000,</p>
+                                        <p>Si es de 11 cm a 19 cm tiene un valor de 25.000,</p>
+                                        <p>Y si es de 1 cm a 10 cm tiene un valor de 15.000.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
         
         <div class="Opiniones">
             <h2 class="title-opn">Opiniones del Producto {{ producto.nombre }}</h2>
@@ -281,5 +350,5 @@
 {% endblock body %}
 
 {% block script %}
-
+    <script src="{% static 'js/product.js' %}"></script>
 {% endblock script %}
