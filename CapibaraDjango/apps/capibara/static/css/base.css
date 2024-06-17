@@ -2,11 +2,8 @@
 body {
     background-color: #F5F5F5 !important;
     margin: 0;
-<<<<<<< HEAD
     padding: 0;
-=======
     padding: 5px;
->>>>>>> 6d601b0219bff7d91a85639ee03efb7955e4df6a
 }
 
 /*Estilos para el header*/
@@ -76,8 +73,6 @@ body {
     overflow: hidden;
 }
 
-<<<<<<< HEAD
-=======
 .search {
     margin: 0 auto;
     width: auto;
@@ -93,23 +88,6 @@ body {
     -o-border-radius: 10px 0 0 10px !important;
 }
 
-.btn-search {
-    background-color: #FF6F61 !important;
-    border: none;
-    color: #fff;
-    padding: 10px;
-    border-radius: 0 10px 10px 0;
-    -webkit-border-radius: 0 10px 10px 0;
-    -moz-border-radius: 0 10px 10px 0;
-    -ms-border-radius: 0 10px 10px 0;
-    -o-border-radius: 0 10px 10px 0;
-}
-
-.btn-search:hover {
-    background-color: #FFA07A !important;
-}
-
->>>>>>> 6d601b0219bff7d91a85639ee03efb7955e4df6a
 .nav-item {
     justify-content: space-between;
     margin-right: 15px;
@@ -150,14 +128,11 @@ body {
     -o-border-radius: 10px 10px 0 0;
 }
 
-<<<<<<< HEAD
-=======
 .title-footer {
     padding: 5px;
     font-weight: 900;
 }
 
->>>>>>> 6d601b0219bff7d91a85639ee03efb7955e4df6a
 .link-social {
     color: #F5F5F5;
     text-decoration: none;

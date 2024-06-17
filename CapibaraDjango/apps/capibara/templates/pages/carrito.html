@@ -11,6 +11,8 @@
 
 {% block style %}
     <link rel="stylesheet" href="{% static 'CSS/cart.css' %}">
+    <script src="https://sdk.mercadopago.com/js/v2">
+    </script>
 {% endblock style %}
 
 {% block nav-activate %}
@@ -26,14 +28,32 @@
     <a class="nav-link" href="/contacto">Nosotros</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link" href="">Productos</a>
+    <a class="nav-link" href="/productos">Productos</a>
 </li>
 
-<li class="nav-item">
-    <a class="nav-link" href="acceso.html"><svg xmlns="http://www.w3.org/2000/svg" width="30"
+<li class="nav-item dropdown">
+    {% if user.is_authenticated %} 
+        <a class="nav-link dropdown" role="button"data-bs-toggle="dropdown" aria-expanded="false"><svg xmlns="http://www.w3.org/2000/svg" width="30"
             height="30" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
             <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
-        </svg></a>
+        </svg>{{user.username}}</a>
+        {% else %} 
+            <a class="nav-link" href="acceso"><svg xmlns="http://www.w3.org/2000/svg" width="30"
+                    height="30" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+                </svg>
+            </a>
+        {% endif %} 
+        <ul id="dropNavbar" class="text dropdown-menu">
+            <form method="post" action="{% url 'perfil' %}">
+                {% csrf_token %}
+                <li><button class="dropdown-item" type="submit" name="logout">Perfil</button></li>
+            </form>
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <li><button class="dropdown-item" type="submit" name="logout">Cerrar sesión</button></li>
+            </form>
+        </ul>
 </li>
 {% endblock nav-activate %}
 
@@ -45,23 +65,55 @@
         <table class="table-cart">
             <thead>
                 <tr>
+                    <th>cod</th>
                     <th>Imagen</th>
                     <th>Nombre</th>
                     <th>Cantidad</th>
+                    <th>Costo adicional</th>
                     <th>Precio unitario</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 {% for item in carrito_items %}
                 <tr>
+                    <td>{{ item.producto.cod }}</td>
                     <td><img src="{{ item.producto.img.url }}" class="card-img-top" alt="{{ item.producto.nombre }}"></td>
                     <td>{{ item.producto.nombre }}</td>
                     <td>{{ item.cantidad }}</td>
+                    {% if costo_despacho %}
+                    ${{ costo_despacho }}
+                {% else %}
+                    $0
+                {% endif %}
+                    <td>
+                        {% if costo_adicional %}
+                            ${{item.costo_adicional}}
+                            {% else %}
+                            $0
+                            {% endif %}
+                    </td>
                     <td>${{ item.producto.precio }}</td>
+                    <td>
+                        <form action="{% url 'eliminar_producto' item.producto.cod %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                              </svg></button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
+            
         </table>
+        <div class="text-center mt-3">
+            <form action="{% url 'vaciar_carrito' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Vaciar Carrito</button>
+            </form>
+        </div>        
+        
         <div class="container-metodo-delivery" id="shipping-method">
             <h2>Método de Envío</h2>
             <form class="form-shipping" id="shipping-form">
@@ -120,19 +172,28 @@
         <h2>Resumen de la Compra</h2>
         <div class="subtotal">
             <span>Subtotal:</span>
-            <span id="Sub-cart"></span>
+            <span id="Sub-cart">${{ subtotal_carrito }}</span>
         </div>
         <div class="iva">
             <span>IVA (19%):</span>
-            <span id="iva-cart"></span>
+            <span id="iva-cart">${{ iva }}</span>
         </div>
+        
         <div class="despacho">
             <span>Costo de Despacho:</span>
-            <span id="Cost-despacho"></span>
-        </div>
-        <div class="total">
+            <span id="Cost-despacho">
+                {% if costo_despacho %}
+                    ${{ costo_despacho }}
+                {% else %}
+                    $0
+                {% endif %}
+            </span>
+        </div>          
+        <div class="total" data-total-con-iva="{{ total_con_iva }}">
             <span>Total:</span>
-            <span id="Total-cart"></span>
+            <span id="Total-cart">${{ total_con_iva }}</span>
+        </div>        
+        <div id="paymentBrick_container">
         </div>
     </section>
 </section>
@@ -142,4 +203,5 @@
 {% block script %}
     <script src="{% static "js/get-zones.js" %}"></script>
     <script src="{% static "js/get-cart.js" %}"></script>
+    <script src="{% static "js/mercadopago.js" %}"></script>
 {% endblock script %}

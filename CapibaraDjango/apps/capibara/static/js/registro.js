@@ -26,4 +26,32 @@ $(document).ready(function () {
         $('main').show();
         $('.' + target).show();
     });
+
+    const generateButton = document.getElementById('generateUsernameButton');
+    const usernameField = document.getElementById('registerUsername');
+
+    generateButton.addEventListener('click', function () {
+        fetch('/generate-username/')
+            .then(response => response.json())
+            .then(data => {
+                usernameField.value = data.username;
+            })
+            .catch(error => console.error('Error:', error));
+    });
 });
+
+function togglePasswordVisibility() {
+    const passwordField = document.getElementById('registerPassword');
+    const iconEye = document.getElementById('icon-eye');
+    const iconEyeSlash = document.getElementById('icon-eye-slash');
+
+    if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        iconEye.style.display = 'none';
+        iconEyeSlash.style.display = 'inline';
+    } else {
+        passwordField.type = 'password';
+        iconEye.style.display = 'inline';
+        iconEyeSlash.style.display = 'none';
+    }
+}

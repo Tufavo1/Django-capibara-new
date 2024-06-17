@@ -65,12 +65,14 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 # Procesador del contexto del carrito personalizado
                 "apps.capibara.context_processor.carrito_counter",
-                # Procesador del contexto del
-                "apps.capibara.context_processor.calcular_costo_adicional",
+                # Procesador del contexto del subtotal del carrito
+                "apps.capibara.context_processor.subtotal_carrito",
             ],
         },
     },
 ]
+
+APPEND_SLASH = False
 
 WSGI_APPLICATION = "CapibaraDjango.wsgi.application"
 
@@ -85,7 +87,6 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

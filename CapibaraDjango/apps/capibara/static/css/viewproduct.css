@@ -8,15 +8,17 @@
     -moz-border-radius: 10px;
     -ms-border-radius: 10px;
     -o-border-radius: 10px;
+    overflow: hidden;
 }
 
 .Container-Producto-img {
     flex: 1;
+    aspect-ratio: 1/1;
 }
 
 .Container-Producto-img :where(img) {
     width: 100%;
-    height: 800px;
+    height: 100%;
     object-fit: cover;
     overflow: hidden;
 }

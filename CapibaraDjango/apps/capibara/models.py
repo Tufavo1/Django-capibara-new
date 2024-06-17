@@ -55,18 +55,32 @@ class Producto(models.Model):
     cantidad_patas_gomas = models.IntegerField(default=0, blank=False)
     cantidad_rieles = models.IntegerField(default=0, blank=False)
 
+    disponible = models.BooleanField(default=True)
+
+    def decrementar_stock(self, cantidad):
+        if self.stock >= cantidad:
+            self.stock -= cantidad
+            if self.stock == 0:
+                self.disponible = False
+            self.save()
+        else:
+            raise ValueError("No hay suficiente stock para decrementar.")
+
     def __str__(self):
         txt = "[{0}] {1} - {2}"
         return txt.format(self.cod, self.mueble, self.nombre)
 
 
 class User(AbstractUser):
-    username = models.CharField(primary_key=True, max_length=50, null=False)
-    password = models.CharField(max_length=50, null=False)
-    email = models.CharField(max_length=50, null=False)
     nombre = models.CharField(max_length=50, null=False)
+    apellido = models.CharField(max_length=50, null=False)
+    username = models.CharField(primary_key=True, max_length=50, null=False)
+    email = models.EmailField(max_length=50, null=False, unique=True)
+    password = models.CharField(max_length=50, null=False)
+    telefono = models.CharField(max_length=12, null=False)
+    region = models.CharField(max_length=100, null=False)
+    comuna = models.CharField(max_length=100, null=False)
     direccion = models.CharField(max_length=100, null=False)
-    telefono = models.TextField(max_length=12, null=False)
     subscribed = models.BooleanField(null=False, default=False)
 
     def __str__(self):
@@ -88,7 +102,9 @@ class Opinion(models.Model):
 
 class Boleta(models.Model):
     id = models.AutoField(primary_key=True)
-    comprador = models.ForeignKey(User, on_delete=models.CASCADE)
+    comprador = models.ForeignKey(
+        User, related_name="boletas", on_delete=models.CASCADE
+    )
     fecha = models.DateField(auto_now_add=True)
     total = models.IntegerField(null=False)
     estado = models.CharField(max_length=20, null=False, default="Por enviar")

@@ -208,3 +208,118 @@ form .btn input[type="submit"] {
     font-weight: 500;
     cursor: pointer;
 }
+
+.select-custom {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* Label styling */
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+    text-align: center;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: #333;
+    background-color: #fff;
+    border: 2px solid #000;
+    border-radius: 4px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    position: relative;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16"><path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px top 50%;
+    background-size: 15px 15px;
+}
+
+select:focus {
+    border-color: #FF6F61;
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 94, 0, 0.6);
+}
+
+/*Estilo para los input custom*/
+.name-custom {
+    width: 50%;
+}
+
+/*Estilos para los placeholder*/
+::placeholder {
+    text-align: center;
+}
+
+input {
+    text-align: center;
+}
+
+
+/*Estilos para el boton generar usaurio*/
+.btn-generate {
+    width: 100%;
+    background-color: #FF6F61;
+    padding: 5px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    color: #fff;
+}
+
+.custom-pass {
+    width: 100%;
+    margin: 0 auto;
+    justify-content: center;
+    display: flex;
+    margin-top: 20px;
+}
+
+.password-custom {
+    width: 95%;
+    height: 100%;
+    margin-right: -20px;
+    padding: 12px;
+    border: 1px solid #FFA07A;
+    border-radius: 15px 0 0 15px;
+    -webkit-border-radius: 15px 0 0 15px;
+    -moz-border-radius: 15px 0 0 15px;
+    -ms-border-radius: 15px 0 0 15px;
+    -o-border-radius: 15px 0 0 15px;
+}
+
+.password-custom:focus {
+    border-color: #FF6F61;
+}
+
+.password-custom::placeholder {
+    color: #000;
+    transition: all 0.3s ease;
+}
+
+.password-custom:focus::placeholder {
+    color: #FF6F61;
+}
+
+.toggle-password {
+    padding: 5px;
+    width: 10%;
+    height: 100%;
+    background-color: #FF6F61;
+    color: #fff;
+    border: none;
+    border-radius: 0 0 0 20px;
+    -webkit-border-radius: 0 0 0 20px;
+    -moz-border-radius: 0 0 0 20px;
+    -ms-border-radius: 0 0 0 20px;
+    -o-border-radius: 0 0 0 20px;
+}
