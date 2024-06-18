@@ -25,7 +25,6 @@ def procesar_pago_tarjeta(request):
     payment_response = sdk.payment().create(payment_data)
     payment = payment_response["response"]
 
-    print(payment)
     return payment  # Es importante devolver el resultado del pago
 
 

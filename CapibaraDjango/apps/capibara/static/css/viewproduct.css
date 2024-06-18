@@ -126,6 +126,11 @@
     color: #000;
 }
 
+.hidden {
+    display: none;
+}
+
+
 .btn-calcular {
     margin-left: 10px;
     background-color: #000;

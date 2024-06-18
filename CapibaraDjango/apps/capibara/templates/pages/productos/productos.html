@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title %}
-    <title>SpartSagan - Productos</title>
+    <title>CAPIBARA - Productos</title>
 {% endblock title %}
 
 {% block style %}
@@ -43,7 +43,7 @@
             <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
         </svg>{{user.username}}</a>
         {% else %} 
-            <a class="nav-link" href="acceso"><svg xmlns="http://www.w3.org/2000/svg" width="30"
+            <a class="nav-link" href="/acceso/"><svg xmlns="http://www.w3.org/2000/svg" width="30"
                     height="30" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
                     <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
                 </svg>
@@ -64,49 +64,42 @@
 
 {% block body %}
 <main class="container-main">
-        <section class="container-functions">
-            <div class="row justify-content-center align-items-center">
-                <div class="col-md-3">
-                    <li class="nav-item-filter dropdown">
-                        <a class="nav-link-filter dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Categorias
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/cocina">Comedor</a></li>
-                            <li><a class="dropdown-item" href="/comedor">Cocina</a></li>
-                            <li><a class="dropdown-item" href="/dormitorio">Dormitorio</a></li>
-                        </ul>
-                    </li>
-                </div>
-                <div class="col-md-3">
-                    <li class="nav-item-filter dropdown">
-                        <a class="nav-link-filter dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Productos
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Garcia</a></li>
-                            <li><a class="dropdown-item" href="#">Liberty</a></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
-                </div>
-                <div class="col-md-3">
-                    <form class="d-flex search" role="search">
-                        <input class="form-control w-100" type="search" placeholder="¡Qué deseas buscar!"
-                            aria-label="Search">
-                    </form>
-                </div>
-                <div class="col-md-3">
-                    <li class="nav-item-filter">
-                        <a class="nav-link-filter-offers" href="#">Ofertas <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-percent" viewBox="0 0 16 16">
-                            <path d="M13.442 2.558a.625.625 0 0 1 0 .884l-10 10a.625.625 0 1 1-.884-.884l10-10a.625.625 0 0 1 .884 0M4.5 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5m7 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
-                        </svg></a>
-                    </li>
-                </div>
+    <section class="container-functions">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-3">
+                <li class="nav-item-filter dropdown">
+                    <a class="nav-link-filter-offers active" disabled>Todos los productos</a>
+                </li>
             </div>
-        </section>
+            <div class="col-md-3">
+                <li class="nav-item-filter dropdown">
+                    <a class="nav-link-filter-offers dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Categorias
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/comedor">Comedor</a></li>
+                        <li><a class="dropdown-item" href="/cocina">Cocina</a></li>
+                        <li><a class="dropdown-item" href="/dormitorio">Dormitorio</a></li>
+                    </ul>
+                </li>
+            </div>
+
+            <div class="col-md-3">
+                <li class="nav-item-filter">
+                    <a class="nav-link-filter-offers" href="#">Ofertas <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-percent" viewBox="0 0 16 16">
+                        <path d="M13.442 2.558a.625.625 0 0 1 0 .884l-10 10a.625.625 0 1 1-.884-.884l10-10a.625.625 0 0 1 .884 0M4.5 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5m7 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+                      </svg></a>
+                </li>
+            </div>
+            <div class="col-md-3">
+                <form class="d-flex search" role="search">
+                    <input class="form-control me-0" type="search" placeholder="¡Qué deseas buscar!"
+                        aria-label="Search">
+                </form>
+            </div>
+        </div>
+    </section>
 
         <section class="container-card">
             <div class="col-md-6 filter">
@@ -130,7 +123,7 @@
                     </div>
 
                     <div class="filter-item">
-                        <h2 class="filter-header-cat">Categoría</h2>
+                        <h2 class="filter-header-cat">Tipo de muebles</h2>
                         <div class="filter-body">
                             <ul class="list-group">
                                 {% for m in mueb %}
@@ -171,7 +164,7 @@
                                 </svg>
                             </button>
                             <div id="mensaje-exito" style="display: none;" class="alert text-center alert-success mt-3">Agregado con éxito :)</div>
-                            <div id="mensaje-stock" style="display: none;" class="alert text-center alert-danger mt-3">No se puede agregar mas productos no hay suficiente stock :c</div>
+                            <div id="mensaje-stock" style="display: none;" class="alert text-center alert-danger mt-3">No se puede agregar más productos, no hay suficiente stock :c</div>
                         </form>   
                     </div>
                 </a>

@@ -15,6 +15,10 @@
     z-index: 1000;
 }
 
+.hidden {
+    display: none;
+}
+
 .search {
     display: flex;
     align-items: center;

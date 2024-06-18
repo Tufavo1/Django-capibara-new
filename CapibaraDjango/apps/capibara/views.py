@@ -1,4 +1,4 @@
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import *
 from django.core.paginator import Paginator
@@ -14,6 +14,8 @@ import string
 import random
 from django.db import IntegrityError
 from .mercadopago import *
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 
 # Create your views here.
@@ -79,7 +81,7 @@ def CargarCocina(request):
 
     return render(
         request,
-        "pages/productos/comedor.html",
+        "pages/productos/cocina.html",
         {"prod": page_products, "mueb": muebles, "cat": categorias},
     )
 
@@ -109,7 +111,7 @@ def CargarDormitorio(request):
 
     return render(
         request,
-        "pages/productos/comedor.html",
+        "pages/productos/dormitorio.html",
         {"prod": page_products, "mueb": muebles, "cat": categorias},
     )
 
@@ -233,35 +235,20 @@ def perfil(request):
                 messages.error(request, f"Error al actualizar el perfil: {e}")
                 context["error"] = f"Error al actualizar el perfil: {e}"
 
-    boletas = Boleta.objects.filter(comprador=user)
-    context["boletas"] = boletas
     return render(request, "pages/login/perfil.html", context)
 
 
-def boleta_detalle(request, id):
-    try:
-        boleta = Boleta.objects.get(id=id)
-        detalles = DetalleBoleta.objects.filter(id_boleta=boleta).select_related(
-            "producto"
-        )
-        detalles_list = [
-            {
-                "producto": {"nombre": detalle.producto.nombre},
-                "cantidad": detalle.cantidad,
-            }
-            for detalle in detalles
-        ]
-        response_data = {
-            "comprador": f"{boleta.comprador.nombre} {boleta.comprador.apellido}",  # Ajusta esto según tus campos
-            "fecha": boleta.fecha,
-            "total": boleta.total,
-            "detalles": detalles_list,
-        }
-        return JsonResponse(response_data)
-    except Boleta.DoesNotExist:
-        return JsonResponse({"error": "Boleta no encontrada"}, status=404)
+# Historial de productos comprados
+@login_required
+def order_history(request):
+    orders = Order.objects.filter(
+        user=request.user
+    )  # Get orders for the logged-in user
+    context = {"orders": orders}
+    return render(request, "pages/login/perfil.html", context)
 
 
+@csrf_exempt
 def acceso(request):
     context = {}
 
@@ -275,6 +262,7 @@ def acceso(request):
                 return redirect("/home")
             else:
                 context["error"] = "Credenciales inválidas. Intente nuevamente."
+                pass
         elif (
             "registerNombre" in request.POST
             and "registerApellido" in request.POST
@@ -306,14 +294,13 @@ def acceso(request):
                         username=nombre_usuario,
                         email=correo,
                         password=contraseña,
-                        first_name=nombre,
-                        last_name=apellido,
+                        nombre=nombre,
+                        apellido=apellido,
+                        telefono=telefono,
+                        region=region,
+                        comuna=comuna,
+                        direccion=direccion,
                     )
-                    user.telefono = telefono
-                    user.region = region
-                    user.comuna = comuna
-                    user.direccion = direccion
-                    user.save()
 
                     login(request, user)
                     return redirect("/home")
@@ -343,35 +330,91 @@ def logout_view(request):
 
 
 # mercado pago
+@csrf_exempt
+@login_required
 def process_payment(request):
     if request.method == "POST":
-        payment_method_id = request.POST.get("payment_method_id")
-
         try:
-            if payment_method_id.startswith(
-                "credit_card"
-            ) or payment_method_id.startswith("debit_card"):
-                payment = procesar_pago_tarjeta(request)
-            else:
-                payment = procesar_pago_ticket(request)
+            form_data = json.loads(request.body)
+            transaction_amount = form_data.get("transaction_amount")
+            items = form_data.get("items")
 
-            return JsonResponse({"status": "success", "payment": payment})
+            if items is None or transaction_amount is None:
+                return JsonResponse(
+                    {"error": "Datos incompletos en la solicitud"}, status=400
+                )
+
+            # Crear la orden
+            order = Order.objects.create(
+                user=request.user, total_amount=transaction_amount
+            )
+
+            del request.session["carrito"]
+            request.session.modified = True
+
+            # Crear los items de la orden y decrementar el stock
+            for item in items:
+                producto = get_object_or_404(Producto, cod=item["cod"])
+                OrderItem.objects.create(
+                    order=order,
+                    product=producto,
+                    quantity=item["cantidad"],
+                    price=item["precio"],
+                    image=item[
+                        "imagen"
+                    ],  # Utiliza la imagen proporcionada en el carrito
+                )
+
+                # Decrementar el stock del producto
+                try:
+                    producto.decrementar_stock(item["cantidad"])
+                except ValueError as e:
+                    # Manejar el error de stock insuficiente, si es necesario
+                    return JsonResponse({"error": str(e)}, status=400)
+            # Payment Successful - Update Order Status
+            order.status = "processing"
+            order.save()
+            # Redirigir a la página de pago exitoso con la orden ID
+            return JsonResponse({"redirect_url": f"/pago_exitoso/{order.id}/"})
+        except json.JSONDecodeError:
+            return JsonResponse(
+                {"error": "Error al decodificar los datos JSON"}, status=400
+            )
         except Exception as e:
-            return JsonResponse({"status": "error", "message": str(e)})
+            return JsonResponse({"error": str(e)}, status=500)
+    else:
+        return JsonResponse({"error": "Método de solicitud no permitido"}, status=405)
 
 
+@login_required
 def crear_preferencia(request):
     if request.method == "POST":
-        transaction_amount = float(request.POST.get("transaction_amount"))
+        data = json.loads(request.body)
+        transaction_amount = data.get("transaction_amount")
+        items = data.get("items")
+
+        # Obtener información del usuario autenticado
+        user = request.user
+        payer_info = {
+            "name": user.first_name,
+            "surname": user.last_name,
+            "email": user.email,
+        }
+
+        preference_items = []
+        for item in items:
+            preference_items.append(
+                {
+                    "title": item["nombre"],
+                    "quantity": item["cantidad"],
+                    "unit_price": item["precio"],
+                    "picture_url": item["imagen"],
+                }
+            )
 
         preference_data = {
-            "items": [
-                {
-                    "title": "Mi producto",
-                    "quantity": 1,
-                    "unit_price": transaction_amount,
-                }
-            ],
+            "items": preference_items,
+            "payer": payer_info,
             "back_urls": {
                 "success": "http://127.0.0.1:8000/pago_exitoso/",
                 "failure": "http://127.0.0.1:8000/pago_fallido/",
@@ -384,3 +427,18 @@ def crear_preferencia(request):
         preference = preference_response["response"]
 
         return JsonResponse({"preference_id": preference["id"]})
+
+
+@login_required
+def cargar_pago_exitoso(request, order_id):
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    context = {"order": order, "items": order.items.all()}
+    return render(request, "pages/mercadopago/pago_exitoso.html", context)
+
+
+def CargarPagofallido(request):
+    return render(request, "pages/mercadopago/fallido.html")
+
+
+def CargarPagopendiente(request):
+    return render(request, "pages/mercadopago/exito.html")

@@ -14,24 +14,35 @@ function getCookie(name) {
 }
 
 const csrftoken = getCookie('csrftoken');
-
-
 const totalConIva = parseFloat(document.querySelector('.total').dataset.totalConIva);
+
+// Obtener detalles de los productos
+const carritoItems = [];
+document.querySelectorAll('.cart-item').forEach(item => {
+    carritoItems.push({
+        cod: item.dataset.cod,
+        nombre: item.dataset.nombre,
+        cantidad: parseInt(item.dataset.cantidad),
+        precio: parseFloat(item.dataset.precio),
+        costo_adicional: parseFloat(item.dataset.costoAdicional),
+        imagen: item.dataset.imagen
+    });
+});
 
 const mp = new MercadoPago('TEST-4c5e69e7-803c-4ae4-8843-03f15285fdc9', {
     locale: 'es'
 });
 const bricksBuilder = mp.bricks();
 const renderPaymentBrick = async (bricksBuilder) => {
-    // Obtener el preferenceId del backend
     fetch('/crear_preferencia/', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'X-CSRFToken': csrftoken // Incluye el token CSRF
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
         },
-        body: new URLSearchParams({
-            'transaction_amount': totalConIva
+        body: JSON.stringify({
+            transaction_amount: totalConIva,
+            items: carritoItems
         })
     })
         .then(response => {
@@ -41,15 +52,15 @@ const renderPaymentBrick = async (bricksBuilder) => {
             return response.json();
         })
         .then(data => {
+            console.log('Respuesta de crear_preferencia:', data);
             const preferenceId = data.preference_id;
 
             const settings = {
                 initialization: {
                     preferenceId: preferenceId,
-                    amount: totalConIva, // Usar el valor calculado
+                    amount: totalConIva,
                     payer: {
-                        // Aquí puedes incluir datos del pagador si los tienes disponibles en el frontend
-                        name: "",
+                        name: "",  // Esta información ya no es necesaria aquí
                         surname: "",
                         email: "",
                     },
@@ -74,15 +85,18 @@ const renderPaymentBrick = async (bricksBuilder) => {
                         // Callback llamado cuando el Brick está listo.
                     },
                     onSubmit: ({ selectedPaymentMethod, formData }) => {
-                        // callback llamado al hacer clic en el botón de envío de datos
                         return new Promise((resolve, reject) => {
-                            fetch("/process_payment/", { // Asegúrate de usar la ruta correcta
+                            fetch("/process_payment/", {
                                 method: "POST",
                                 headers: {
                                     "Content-Type": "application/json",
-                                    "X-CSRFToken": csrftoken // Incluye el token CSRF
+                                    "X-CSRFToken": csrftoken
                                 },
-                                body: JSON.stringify(formData),
+                                body: JSON.stringify({
+                                    transaction_amount: totalConIva,
+                                    items: carritoItems,
+                                    formData: formData
+                                }),
                             })
                                 .then((response) => {
                                     if (!response.ok) {
@@ -91,18 +105,15 @@ const renderPaymentBrick = async (bricksBuilder) => {
                                     return response.json();
                                 })
                                 .then((response) => {
-                                    // Redirigir a la página de éxito del pago
-                                    window.location.href = "/pago_exitoso/"; // Asegúrate de tener esta ruta definida en Django
+                                    window.location.href = response.redirect_url;
                                 })
                                 .catch((error) => {
-                                    // manejar la respuesta de error al intentar crear el pago
                                     console.error('Error:', error);
                                     reject(error);
                                 });
                         });
                     },
                     onError: (error) => {
-                        // callback llamado para todos los casos de error de Brick
                         console.error(error);
                     },
                 },
@@ -116,7 +127,6 @@ const renderPaymentBrick = async (bricksBuilder) => {
         })
         .catch(error => {
             console.error('Error:', error);
-            // Mostrar un mensaje de error al usuario
         });
 };
 

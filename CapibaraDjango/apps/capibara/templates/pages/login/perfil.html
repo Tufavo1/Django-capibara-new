@@ -7,7 +7,6 @@
 {% endblock title %}
 
 {% block style %}
-<link rel="stylesheet" href="{% static 'css/index.css' %}">
 <link rel="stylesheet" href="{% static 'css/perfil.css' %}">
 {% endblock style %}
 
@@ -57,14 +56,14 @@
 <div class="contenedor">
     <div class="sidebar">
         <button class="btn-sidebar" data-target="container-infouser">Ver Perfil</button>
-        <button class="btn-sidebar" data-target="container-historyuser">Ver Boletas</button>
+        <button class="btn-sidebar" data-target="container-historyuser">Ver Historial</button>
     </div>
     <div class="wrapper">
         <div class="content">
             <main class="container-profile">
                 <section class="container-infouser section">
                     <div class="user-info">
-                        <h2>Datos</h2>
+                        <h1>Datos</h1>
                         <form method="post" action="{% url 'perfil' %}">
                             {% csrf_token %}
                             <div class="info-row">
@@ -126,79 +125,51 @@
                     </div>
                 </section>
                 <section class="container-historyuser section" style="display: none;">
-                    <h2>Historial de Compras</h2>
+                    <h1 class="text-center">Historial de Compras</h1>
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Fecha</th>
-                                    <th>Monto</th>
-                                    <th>Detalles</th>
+                                    <th style="display:none">ID</th>
+                                    <th>img</th>
+                                    <th>Fecha de Compra</th>
+                                    <th>Nombre</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio</th>
+                                    <th>Estado</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for boleta in boletas %}
+                                {% for order in orders %}
+                                    {% for item in order.items.all %}
                                 <tr>
-                                    <td>{{ boleta.id }}</td>
-                                    <td>{{ boleta.fecha|date:"d/m/Y" }}</td>
-                                    <td>${{ boleta.total }}</td>
+                                    <td style="display:none">{{ order.id }}</td>
+                                    <td><img src="{{ item.product.img.url }}" alt="{{ item.product.nombre }}" width="50"></td>
+                                    <td>{{ order.created_at }}</td>
+                                    <td>{{ item.product.nombre }}</td>
+                                    <td>X{{ item.quantity }}</td>
+                                    <td>{{ order.total_amount }}</td>
                                     <td>
-                                        <button class="btn btn-primary view-btn" data-toggle="modal" data-target="#boletaModal" data-id="{{ boleta.id }}">Ver Boleta</button>
-                                        <a href="#" class="btn btn-success" download>Descargar Boleta</a>
+                                        {% if order.status == 'processing' %}
+                                            {{ order.status }} 
+                                        {% else %}
+                                        <span class="truck-icon">
+                                            Por Enviar <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-truck" viewBox="0 0 16 16">
+                                                <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5zm1.294 7.456A2 2 0 0 1 4.732 11h5.536a2 2 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456M12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
+                                              </svg>
+                                        </span>
+                                        {% endif %}
                                     </td>
-                                </tr>
-                                {% empty %}
-                                <tr>
-                                    <td colspan="4">No tienes compras registradas.</td>
+                                    {% endfor %}
                                 </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
                     </div>
+                    <a href="{% url 'order_history' %}" class="btn-sidebar-load">Ver Boletas</a>
                 </section>
+                
             </main>
-            <div class="modal fade" id="boletaModal" tabindex="-1" role="dialog" aria-labelledby="boletaModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="boletaModalLabel">Boleta de Compra</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="info-modal">
-                                <label for="fullName" class="col-sm-4 col-form-label">Nombre Completo:</label>
-                                <div class="col-sm-8">
-                                    <span id="modalFullName"></span>
-                                </div>
-                            </div>
-                            <div class="info-modal">
-                                <label for="modalFecha" class="col-sm-4 col-form-label">Fecha:</label>
-                                <div class="col-sm-8">
-                                    <span id="modalFecha"></span>
-                                </div>
-                            </div>
-                            <div class="info-modal">
-                                <label for="modalMonto" class="col-sm-4 col-form-label">Monto:</label>
-                                <div class="col-sm-8">
-                                    <span id="modalMonto"></span>
-                                </div>
-                            </div>
-                            <div class="info-modal">
-                                <label for="modalDetalles" class="col-sm-4 col-form-label">Detalles:</label>
-                                <div class="col-sm-8">
-                                    <ul id="modalDetalles"></ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
@@ -213,7 +184,7 @@
         document.querySelectorAll('span').forEach(span => span.style.display = 'none');
         document.querySelectorAll('input').forEach(input => input.style.display = 'block');
         document.getElementById('editBtn').style.display = 'none';
-        document.getElementById('cancelBtn').style.display = 'inline-block');
+        document.getElementById('cancelBtn').style.display = 'inline-block';
         document.getElementById('saveBtn').style.display = 'inline-block';
     });
 

@@ -42,43 +42,41 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    const form = document.getElementById("form-agregar-carrito");
-    const mensajeExito = document.getElementById("mensaje-exito");
-    const mensajeStock = document.getElementById("mensaje-stock");
+    document.querySelectorAll('form#form-agregar-carrito').forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
 
-    form.addEventListener("submit", function (event) {
-        event.preventDefault();
+            const mensajeExito = form.querySelector("#mensaje-exito");
+            const mensajeStock = form.querySelector("#mensaje-stock");
 
-        const formData = new FormData(form);
-        fetch(form.action, {
-            method: 'POST',
-            body: formData
-        })
-            .then(response => {
-                if (response.ok) {
-                    mensajeExito.style.display = "block";
-                    setTimeout(function () {
-                        mensajeExito.style.display = "none";
-                    }, 3000);
-                } else if (response.status === 400) {
-                    response.json()
-                        .then(data => {
-                            if (data.error === "invalid_quantity") {
-                                console.error('Error en el servidor:', data.error);
-                            } else if (data.error === "out_of_stock") {
-                                mensajeStock.style.display = "block";
-                                setTimeout(function () {
-                                    mensajeStock.style.display = "none";
-                                }, 3000);
-                            } else {
-                                console.error('Error en el servidor:', data.error);
-                            }
-                        });
-                } else {
-                    console.error('Error en la solicitud fetch:', response.statusText);
+            const formData = new FormData(form);
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': formData.get('csrfmiddlewaretoken')
                 }
             })
-            .catch(error => console.error('Error en la solicitud fetch:', error));
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        mensajeExito.style.display = "block";
+                        setTimeout(function () {
+                            mensajeExito.style.display = "none";
+                        }, 3000);
+                    } else if (data.error === "invalid_quantity") {
+                        console.error('Error en el servidor:', data.error);
+                    } else if (data.error === "out_of_stock") {
+                        mensajeStock.style.display = "block";
+                        setTimeout(function () {
+                            mensajeStock.style.display = "none";
+                        }, 3000);
+                    } else {
+                        console.error('Error en el servidor:', data.error);
+                    }
+                })
+                .catch(error => console.error('Error en la solicitud fetch:', error));
+        });
     });
 
     const checkboxes = document.querySelectorAll('.categoria-checkbox');

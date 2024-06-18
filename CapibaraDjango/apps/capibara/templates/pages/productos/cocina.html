@@ -43,7 +43,7 @@
             <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
         </svg>{{user.username}}</a>
         {% else %} 
-            <a class="nav-link" href="acceso"><svg xmlns="http://www.w3.org/2000/svg" width="30"
+            <a class="nav-link" href="/acceso/"><svg xmlns="http://www.w3.org/2000/svg" width="30"
                     height="30" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
                     <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
                 </svg>
@@ -68,27 +68,19 @@
             <div class="row justify-content-center align-items-center">
                 <div class="col-md-3">
                     <li class="nav-item-filter dropdown">
-                        <a class="nav-link-filter dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        <a class="nav-link-filter-offers" href="/productos">Todos los productos</a>
+                    </li>
+                </div>
+                <div class="col-md-3">
+                    <li class="nav-item-filter dropdown">
+                        <a class="nav-link-filter-offers dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             Categorias
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="/comedor">Comedor</a></li>
-                            <li><a class="dropdown-item " disabled>Cocina</a></li>
+                            <li><a class="dropdown-item active" disabled>Cocina</a></li>
                             <li><a class="dropdown-item" href="/dormitorio">Dormitorio</a></li>
-                        </ul>
-                    </li>
-                </div>
-                <div class="col-md-3">
-                    <li class="nav-item-filter dropdown">
-                        <a class="nav-link-filter dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Productos
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Garcia</a></li>
-                            <li><a class="dropdown-item" href="#">Liberty</a></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
                         </ul>
                     </li>
                 </div>
@@ -103,11 +95,6 @@
                     <form class="d-flex search" role="search">
                         <input class="form-control me-0" type="search" placeholder="¡Qué deseas buscar!"
                             aria-label="Search">
-                        <button class="btn-search" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="20"
-                                height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                <path
-                                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-                            </svg></button>
                     </form>
                 </div>
             </div>
@@ -135,7 +122,7 @@
                     </div>
 
                     <div class="filter-item">
-                        <h2 class="filter-header-cat">Categoría</h2>
+                        <h2 class="filter-header-cat">Tipo de muebles</h2>
                         <div class="filter-body">
                             <ul class="list-group">
                                 {% for m in mueb %}
@@ -155,29 +142,32 @@
 
             <div class="col-md-9 container-productos">
                 {% for p in prod %}
-                <button class="card" id="{{p.cod}}" data-categoria="{{p.categoria.nombre}}" data-precio="{{p.precio}}" data-url="{% url "ver_producto" p.cod %}">
-                    <span class="card-stock" style="display:none;">Disponible: {{ p.stock }} </span>
-                    <img src="{{ p.img.url }}" class="card-img-top" alt="{{ p.img.url }}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ p.nombre }}</h5>
-                        <p class="card-brand">{{ p.clasificacion}}</p>
-                        <p class="card-price">$<span id="price-card">{{p.precio}}</span></p>
-                        <div class="additional-info">
-                            <p class="card-TipoM" style="display:none">Mueble: <span class="Type-card">{{p.categoria.mueble}}</span></p>
-                            <p class="card-TipoM" style="display:none">Tipo de Mueble: <span class="Type-card">{{p.categoria.tipomueble}}</span></p>
-                            <a id="btn-add-to-cart" class="btn-cart">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                                    class="bi bi-cart-plus" viewBox="0 0 16 16">
-                                    <path
-                                        d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9z" />
-                                    <path
-                                        d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zm3.915 10L3.102 4h10.796l-1.313 7zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
-                                </svg>
-                            </a>
-                        </div>
+                <a href="{% url 'ver_producto' p.cod %}" class="card abrir-producto" id="{{p.cod}}" data-categoria="{{p.categoria.id}}" data-precio="{{p.precio}}">
+                    <div class="card-img">
+                        <img src="{{ p.img.url }}" class="card-img-top" alt="{{ p.nombre }}">
                     </div>
-                </button>
-                {% endfor %}
+                    <div class="info-card">
+                        <div class="text-product">
+                            <h5 class="card-title">{{ p.nombre }}</h5>
+                            <div class="price">Precio: ${{ p.precio }}</div>
+                            <div class="stock">Disponible: {{ p.stock }}</div>
+                        </div>
+                        <form id="form-agregar-carrito" method="post" action="{% url 'agregar_al_carrito' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="producto_cod" value="{{ p.cod }}">
+                            <input type="hidden" name="precio_total" id="precio-total" value="{{ p.precio }}" max="{{ p.stock }}">
+                            <button id="btn-add-to-cart" class="btn-cart" type="submit">
+                                Agregar al carrito 
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart-plus-fill" viewBox="0 0 16 16">
+                                    <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0M9 5.5V7h1.5a.5.5 0 0 1 0 1H9v1.5a.5.5 0 0 1-1 0V8H6.5a.5.5 0 0 1 0-1H8V5.5a.5.5 0 0 1 1 0"/>
+                                </svg>
+                            </button>
+                            <div id="mensaje-exito" style="display: none;" class="alert text-center alert-success mt-3">Agregado con éxito :)</div>
+                            <div id="mensaje-stock" style="display: none;" class="alert text-center alert-danger mt-3">No se puede agregar mas productos no hay suficiente stock :c</div>
+                        </form>   
+                    </div>
+                </a>
+                {% endfor %}  
             </div>
         </section>
 
@@ -198,3 +188,7 @@
         </div>  
     </main>
 {% endblock body %}
+
+{% block script %}
+<script src="{% static "js/utilities.js" %}"></script>
+{% endblock script %}
