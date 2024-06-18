@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const formsearch = document.querySelector('.search');
     const input = formsearch.querySelector('input');
     const products = document.querySelectorAll('.abrir-producto');
+    var checkboxes = document.querySelectorAll('.checkbox');
 
     input.addEventListener('input', function () {
         const searchTerm = input.value.trim().toLowerCase();
