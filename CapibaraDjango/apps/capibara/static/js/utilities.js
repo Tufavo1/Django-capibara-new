@@ -79,34 +79,20 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    const checkboxes = document.querySelectorAll('.categoria-checkbox');
-    const productos = document.querySelectorAll('.abrir-producto');
+    // Filter by Category (Checkbox Changes)
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            const selectedCategoryIds = Array.from(checkboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
 
-    checkboxes.forEach(function (checkbox) {
-        checkbox.addEventListener('change', function () {
-            const categoriasSeleccionadas = obtenerCategoriasSeleccionadas();
-            filtrarProductosPorCategoria(categoriasSeleccionadas);
+            products.forEach(product => {
+                const productCategoryIds = product.dataset.categoria.split(',');
+                const showProduct = selectedCategoryIds.length === 0 ||
+                    productCategoryIds.some(id => selectedCategoryIds.includes(id));
+
+                product.style.display = showProduct ? 'block' : 'none';
+            });
         });
     });
-
-    function obtenerCategoriasSeleccionadas() {
-        const categoriasSeleccionadas = [];
-        checkboxes.forEach(function (checkbox) {
-            if (checkbox.checked) {
-                categoriasSeleccionadas.push(parseInt(checkbox.value));
-            }
-        });
-        return categoriasSeleccionadas;
-    }
-
-    function filtrarProductosPorCategoria(categoriasSeleccionadas) {
-        productos.forEach(function (producto) {
-            const categoriaProducto = parseInt(producto.getAttribute('data-categoria'));
-            if (categoriasSeleccionadas.length === 0 || categoriasSeleccionadas.includes(categoriaProducto)) {
-                producto.style.display = 'block';
-            } else {
-                producto.style.display = 'none';
-            }
-        });
-    }
 });

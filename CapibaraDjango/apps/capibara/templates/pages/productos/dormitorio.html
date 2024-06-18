@@ -75,7 +75,7 @@
                     <li class="nav-item-filter dropdown">
                         <a class="nav-link-filter-offers dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
-                            Categorias
+                            Espacio
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="/comedor">Comedor</a></li>
@@ -127,8 +127,8 @@
                             <ul class="list-group">
                                 {% for m in mueb %}
                                 <li class="list-group-item">
-                                    <label class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="categoria" value="{{ m.id }}"> {{ m.nombre }}
+                                    <label class="form-check" for="{{m.nombre}}">
+                                        <input class="form-check-input categoria-checkbox" type="checkbox" name="categoria" id="{{m.nombre}}" value="{{ m.id }}"> {{ m.nombre }}
                                     </label>
                                 </li>
                                 {% endfor %}
@@ -142,7 +142,7 @@
 
             <div class="col-md-9 container-productos">
                 {% for p in prod %}
-                <a href="{% url 'ver_producto' p.cod %}" class="card abrir-producto" id="{{p.cod}}" data-categoria="{{p.categoria.id}}" data-precio="{{p.precio}}">
+                <a href="{% url 'ver_producto' p.cod %}" class="card abrir-producto" id="{{p.cod}}" data-categoria="{{p.mueble.id}}" data-precio="{{p.precio}}">
                     <div class="card-img">
                         <img src="{{ p.img.url }}" class="card-img-top" alt="{{ p.nombre }}">
                     </div>

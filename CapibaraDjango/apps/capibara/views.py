@@ -55,7 +55,7 @@ def ver_producto(request, p_cod):
 def CargarProductos(request):
     productos = Producto.objects.filter(stock__gt="0").order_by("nombre")
     muebles = Mueble.objects.all()
-    categorias = Producto.objects.values("categoria").distinct()
+    categorias = Producto.objects.values("mueble").distinct()
     paginator = Paginator(productos, 9)
     page_number = request.GET.get("page")
     page_products = paginator.get_page(page_number)
@@ -74,7 +74,7 @@ def CargarProductos(request):
 def CargarCocina(request):
     prodCoci = Producto.objects.filter(stock__gt="0", categoria="1").order_by("nombre")
     muebles = Mueble.objects.all()
-    categorias = Producto.objects.values("categoria").distinct()
+    categorias = Producto.objects.values("mueble").distinct()
     paginator = Paginator(prodCoci, 6)
     page_number = request.GET.get("page")
     page_products = paginator.get_page(page_number)
@@ -89,7 +89,7 @@ def CargarCocina(request):
 def CargarComedor(request):
     prodCom = Producto.objects.filter(stock__gt="0", categoria="3").order_by("nombre")
     muebles = Mueble.objects.all()
-    categorias = Producto.objects.values("categoria").distinct()
+    categorias = Producto.objects.values("mueble").distinct()
     paginator = Paginator(prodCom, 6)
     page_number = request.GET.get("page")
     page_products = paginator.get_page(page_number)
@@ -104,7 +104,7 @@ def CargarComedor(request):
 def CargarDormitorio(request):
     prodDorm = Producto.objects.filter(stock__gt="0", categoria="2").order_by("nombre")
     muebles = Mueble.objects.all()
-    categorias = Producto.objects.values("categoria").distinct()
+    categorias = Producto.objects.values("mueble").distinct()
     paginator = Paginator(prodDorm, 6)
     page_number = request.GET.get("page")
     page_products = paginator.get_page(page_number)
